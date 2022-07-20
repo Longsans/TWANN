@@ -26,7 +26,7 @@ export const Login = () => {
   };
 
   return auth.user ? (
-    <Navigate to="/" replace={true} />
+    <Navigate to="/" replace />
   ) : (
     <div className="Login h-100 d-flex">
       <div className="d-flex flex-column login-area">

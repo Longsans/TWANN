@@ -1,7 +1,8 @@
 import React from "react";
-import { useState } from "react";
 import { authContext } from "../hooks/useAuth";
+import { PERSIST_NAME, TOKEN_NAME } from "../hooks/useToken";
 import { API_URL } from "../config";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const ProvideAuth = ({ children }) => {
   const auth = useProvideAuth();
@@ -9,7 +10,8 @@ export const ProvideAuth = ({ children }) => {
 };
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useLocalStorage("user");
+  const [token, setToken] = useLocalStorage(TOKEN_NAME);
 
   const signIn = async (username, password, rememberUser) => {
     const res = await fetch(`${API_URL}/login`, {
@@ -23,22 +25,30 @@ function useProvideAuth() {
         rememberUser,
       }),
     }).catch(() => {
-      setUser(null);
+      signOut();
       throw "Error connecting to the server!";
     });
 
     if (!res.ok) {
-      setUser(null);
+      signOut();
       throw "Incorrect username or password!";
     }
 
     const body = await res.json();
     setUser(body.user);
+    setToken(body.jwt);
+    if (rememberUser) {
+      localStorage.setItem(PERSIST_NAME, true);
+    } else {
+      localStorage.removeItem(PERSIST_NAME);
+    }
+
     return body.user;
   };
 
   const signOut = () => {
     setUser(null);
+    setToken(null);
   };
 
   return {

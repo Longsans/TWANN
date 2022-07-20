@@ -10,10 +10,16 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import App from "./App";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { ProvideAuth } from "./components/ProvideAuth";
+import { RequireAuth } from "./components/RequireAuth";
+
+if (process.env.NODE_ENV === "production") {
+  disableReactDevTools();
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -23,8 +29,15 @@ root.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="login" element={<Login />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Navigate to="/" replace={true} />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+            <Route path="/home" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
       </Router>

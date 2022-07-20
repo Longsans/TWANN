@@ -1,9 +1,23 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Header } from "../components/Header";
 
 export const Home = () => {
   const auth = useAuth();
 
-  return auth.user ? <div>Home</div> : <Navigate to="/login" replace={true} />;
+  const handleLogOut = () => {
+    auth.signOut();
+  };
+
+  return (
+    <Header>
+      <a
+        className="nav-link text-danger ms-2"
+        role="button"
+        onClick={handleLogOut}
+      >
+        Logout
+      </a>
+    </Header>
+  );
 };
