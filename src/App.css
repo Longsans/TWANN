@@ -1,0 +1,9 @@
+html, body, div#root, div.App {
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+
+div.Layout {
+    flex-grow: 1;
+}
