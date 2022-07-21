@@ -22,7 +22,6 @@ export const Login = () => {
     } catch (errorMsg) {
       alert(errorMsg);
     }
-    console.log(auth.user);
   };
 
   return auth.user ? (

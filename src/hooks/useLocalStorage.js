@@ -7,9 +7,11 @@ export const useLocalStorage = (key) => {
   useEffect(() => {
     const jsonString = localStorage.getItem(key);
     setValue(JSON.parse(jsonString));
+    if (key === "user") console.log(`first set: ${JSON.stringify(value)}`);
   }, []);
 
   useEffect(() => {
+    if (key === "user") console.log(`on change: ${JSON.stringify(value)}`);
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
