@@ -11,7 +11,7 @@ export const HomeLayout = () => {
   };
 
   return (
-    <div>
+    <div className="d-flex flex-column flex-grow-1">
       <Header
         brand="This Web App Needs a Name"
         leftItems={

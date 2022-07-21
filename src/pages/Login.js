@@ -24,9 +24,7 @@ export const Login = () => {
     }
   };
 
-  return auth.user ? (
-    <Navigate to="/" replace />
-  ) : (
+  return (
     <div className="Login h-100 d-flex">
       <div className="d-flex flex-column login-area">
         <h4 className="fw-light text-danger">React web app</h4>
