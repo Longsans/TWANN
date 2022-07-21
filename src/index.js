@@ -13,7 +13,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-console.log("start");
 root.render(
   <React.StrictMode>
     <ProvideAuth>

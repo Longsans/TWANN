@@ -1,10 +1,22 @@
-import { PERSIST_NAME, TOKEN_NAME } from "../hooks/useAuth";
+import { PERSIST_NAME } from "../hooks/useAuth";
 import { API_URL } from "../config";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useEffect } from "react";
+import { DateTime } from "luxon";
+import jwtDecode from "jwt-decode";
 
 export function useProvideAuth() {
-  const [user, setUser] = useLocalStorage("user");
-  const [token, setToken] = useLocalStorage(TOKEN_NAME);
+  const [auth, setAuth] = useLocalStorage("auth");
+
+  useEffect(() => {
+    if (auth) {
+      const jwt = jwtDecode(auth.token);
+      const expiry = DateTime.fromSeconds(jwt.exp);
+      if (expiry < DateTime.now()) {
+        signOut();
+      }
+    }
+  });
 
   const signIn = async (username, password, rememberUser) => {
     const res = await fetch(`${API_URL}/login`, {
@@ -28,8 +40,11 @@ export function useProvideAuth() {
     }
 
     const body = await res.json();
-    setUser(body.user);
-    setToken(body.jwt);
+    console.log(body);
+    setAuth({
+      user: body.user,
+      token: body.jwt,
+    });
     if (rememberUser) {
       localStorage.setItem(PERSIST_NAME, true);
     } else {
@@ -40,12 +55,11 @@ export function useProvideAuth() {
   };
 
   const signOut = () => {
-    setUser(null);
-    setToken(null);
+    setAuth(null);
   };
 
   return {
-    user,
+    ...auth,
     signIn,
     signOut,
   };
