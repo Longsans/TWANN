@@ -30,7 +30,7 @@ export const ContactForm = ({
           className="border border-1 shadow-sm"
         />
       </div>
-      <div className="w-5"></div>
+      <div className="w-2"></div>
       <div>
         <label htmlFor="address" className="d-block mb-1">
           Address

@@ -13,11 +13,14 @@ export const HomeLayout = () => {
   return (
     <div className="d-flex flex-column flex-grow-1">
       <Header
-        brand="This Web App Needs a Name"
-        leftItems={
-          <Link className="nav-link text-dark" to="/contact">
-            Contact
-          </Link>
+        brand={
+          <p className="mb-0">
+            This Web App{" "}
+            <span style={{ color: "white", backgroundColor: "#0078D7" }}>
+              Needs{" "}
+            </span>
+            a Name
+          </p>
         }
         rightItems={
           <a
@@ -28,7 +31,17 @@ export const HomeLayout = () => {
             Logout
           </a>
         }
-      />
+      >
+        <Link className="nav-link text-dark me-4" to="/">
+          Home
+        </Link>
+        <Link className="nav-link text-dark me-4" to="/contact">
+          Contact
+        </Link>
+        <Link className="nav-link text-dark" to="/">
+          About
+        </Link>
+      </Header>
       <Outlet />
     </div>
   );
