@@ -2,15 +2,21 @@ import React, { useState } from "react";
 
 export const ContactForm = ({
   contact,
+  updating,
   onSubmit,
   onCancel,
   onPhoneChange,
   onAddressChange,
+  setUpdating,
 }) => {
-  const [updating, setUpdating] = useState(false);
-
   return (
-    <form className="d-flex flex-grow-1 align-items-center" onSubmit={onSubmit}>
+    <form
+      className="d-flex flex-grow-1 align-items-center"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit();
+      }}
+    >
       <div className="me-5">
         <label htmlFor="phone" className="d-block mb-1">
           Phone

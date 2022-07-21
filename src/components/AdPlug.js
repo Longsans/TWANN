@@ -8,7 +8,8 @@ export const AdPlug = () => {
     >
       <p className="text-center">
         I will put your advertisements here for only $2! Get in touch now!
-        <h3>(+84) 933 597 454</h3>
+        <br />
+        <span className="fs-3 mb-0">(+84) 933 597 454</span>
       </p>
     </div>
   );
