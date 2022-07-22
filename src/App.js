@@ -1,5 +1,4 @@
 import "./App.css";
-import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -37,7 +36,7 @@ function App() {
       <Routes>
         <Route
           element={
-            <div className="App Layout">
+            <div className="App Layout d-flex">
               <Outlet />
             </div>
           }

@@ -40,7 +40,6 @@ export function useProvideAuth() {
     }
 
     const body = await res.json();
-    console.log(body);
     setAuth({
       user: body.user,
       token: body.jwt,
