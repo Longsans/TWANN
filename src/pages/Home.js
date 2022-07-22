@@ -20,10 +20,10 @@ export const Home = () => {
           >
             <h1 className="fw-bold">Hi, {auth.user.username}</h1>
             <p className="fs-5" style={{ textAlign: "justify" }}>
-              Welcome to my website! Like you can see on the top left corner,
-              this web app is in desperate need for a name, since I don't have
-              any good one. Also, there will be more features coming soon to
-              replace this bland page, so stay tuned!
+              Welcome to my website! As you can see on the top left corner, this
+              web app is in desperate need for a name, since I don't have any
+              good one. Also, there will be more features coming soon to replace
+              this bland page, so stay tuned!
             </p>
           </div>
         </div>
