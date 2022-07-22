@@ -38,7 +38,7 @@ export const HomeLayout = () => {
         <Link className="nav-link text-dark me-4" to="/contact">
           Contact
         </Link>
-        <Link className="nav-link text-dark" to="/">
+        <Link className="nav-link text-dark" to="#">
           About
         </Link>
       </Header>

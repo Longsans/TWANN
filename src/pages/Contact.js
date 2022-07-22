@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Contact.css";
+import "../site.css";
 import { API_URL } from "../config";
 import { useAuth } from "../hooks/useAuth";
 import { ContactForm } from "../components/ContactForm";
