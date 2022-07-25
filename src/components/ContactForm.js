@@ -3,27 +3,36 @@ import { useForm } from "react-hook-form";
 import { phoneFormat } from "../regex";
 import "./ContactForm.css";
 
-export const ContactForm = ({
-  contact,
-  updating,
-  onSubmit,
-  onCancel,
-  onPhoneChange,
-  onAddressChange,
-  setUpdating,
-}) => {
+export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
   const {
     register,
     handleSubmit,
+    reset,
+    getValues,
     formState: { errors },
   } = useForm();
 
   useEffect(() => {
-    console.log(errors.phone);
-  }, [errors]);
+    revertChanges();
+  }, []);
+
+  const revertChanges = () => {
+    reset({
+      phone: contact.phone,
+      address: contact.address,
+    });
+  };
+
+  const submit = handleSubmit(() => {
+    try {
+      onSubmit(getValues());
+    } catch (error) {
+      revertChanges();
+    }
+  });
 
   return (
-    <form className="flex-grow-1" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex-grow-1" onSubmit={submit}>
       <div className="row row-cols-4">
         <div className="col-3 me-5">
           <label htmlFor="phone" className="d-block mb-1">
@@ -56,8 +65,6 @@ export const ContactForm = ({
                 message: "Phone number must be between 10 and 11 characters",
               },
             })}
-            value={contact.phone}
-            onChange={onPhoneChange}
             disabled={!updating}
             className="border border-1 shadow-sm contact-input"
           />
@@ -76,8 +83,6 @@ export const ContactForm = ({
                 message: "Address must be between 1 and 75 characters",
               },
             })}
-            value={contact.address}
-            onChange={onAddressChange}
             disabled={!updating}
             className="border border-1 shadow-sm contact-input"
           />
@@ -94,7 +99,7 @@ export const ContactForm = ({
                 className="btn btn-secondary"
                 onClick={() => {
                   setUpdating(false);
-                  onCancel();
+                  revertChanges();
                 }}
               >
                 Cancel

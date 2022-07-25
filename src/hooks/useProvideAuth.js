@@ -9,11 +9,9 @@ export function useProvideAuth() {
     const jsonString = localStorage.getItem(AUTH_NAME);
     setAuth(JSON.parse(jsonString));
     setLoadingInitial(false);
-    console.log(`first set: ${JSON.stringify(auth)}`);
   }, []);
 
   useEffect(() => {
-    console.log(`on change: ${JSON.stringify(auth)}`);
     if (loadingInitial) {
       return;
     }
