@@ -1,9 +1,28 @@
-import { PERSIST_NAME } from "../hooks/useAuth";
 import { API_URL } from "../config";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useState, useEffect } from "react";
 
 export function useProvideAuth() {
-  const [auth, setAuth] = useLocalStorage("auth");
+  const [auth, setAuth] = useState();
+  const [loadingInitial, setLoadingInitial] = useState(true);
+
+  useEffect(() => {
+    const jsonString = localStorage.getItem(AUTH_NAME);
+    setAuth(JSON.parse(jsonString));
+    setLoadingInitial(false);
+    console.log(`first set: ${JSON.stringify(auth)}`);
+  }, []);
+
+  useEffect(() => {
+    console.log(`on change: ${JSON.stringify(auth)}`);
+    if (loadingInitial) {
+      return;
+    }
+    if (auth) {
+      localStorage.setItem(AUTH_NAME, JSON.stringify(auth));
+    } else {
+      localStorage.removeItem(AUTH_NAME);
+    }
+  }, [auth]);
 
   const signIn = async (username, password, rememberUser) => {
     const res = await fetch(`${API_URL}/login`, {
@@ -46,7 +65,11 @@ export function useProvideAuth() {
 
   return {
     ...auth,
+    loadingInitial,
     signIn,
     signOut,
   };
 }
+
+const AUTH_NAME = "auth";
+const PERSIST_NAME = "persistToken";

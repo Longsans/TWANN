@@ -20,6 +20,3 @@ export const useAuth = () => {
 
   return auth;
 };
-
-export const TOKEN_NAME = "token";
-export const PERSIST_NAME = "persistToken";
