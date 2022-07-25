@@ -18,16 +18,10 @@ function ProtectedOutlet() {
   return auth.user ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
-function RedirectToHomeIfAuthenticated({ children }) {
+function RedirectToHomeIfAuthenticated() {
   const auth = useAuth();
 
-  return !auth.user ? children : <Navigate to="/" replace />;
-}
-
-function RequireAuth({ children }) {
-  const auth = useAuth();
-
-  return auth.user ? children : <Navigate to="/login" replace />;
+  return !auth.user ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 function App() {
@@ -41,25 +35,15 @@ function App() {
             </div>
           }
         >
-          <Route
-            path="login"
-            element={
-              <RedirectToHomeIfAuthenticated>
-                <Login />
-              </RedirectToHomeIfAuthenticated>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <HomeLayout />
-              </RequireAuth>
-            }
-          >
-            <Route path="/" element={<Home />} />
-            <Route path="home" element={<Navigate to="/" replace />} />
-            <Route path="contact" element={<Contact />} />
+          <Route element={<RedirectToHomeIfAuthenticated />}>
+            <Route path="login" element={<Login />} />
+          </Route>
+          <Route element={<ProtectedOutlet />}>
+            <Route path="/" element={<HomeLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="home" element={<Navigate to="/" replace />} />
+              <Route path="contact" element={<Contact />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
