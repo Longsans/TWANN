@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../site.css";
 import { API_URL } from "../config";
 import { useAuth } from "../hooks/useAuth";
-import { ContactForm } from "../components/ContactForm";
 import { AdPlug } from "../components/AdPlug";
+import { ContactForm } from "../components/ContactForm";
 
 export const Contact = () => {
   const [contact, setContact] = useState(null);
-  const [editableContact, setEditableContact] = useState({
-    phone: "",
-    address: "",
-  });
   const [updatingContact, setUpdatingContact] = useState(false);
+  const [loadingContact, setLoadingContact] = useState(true);
   const auth = useAuth();
 
   useEffect(() => {
@@ -25,7 +22,7 @@ export const Contact = () => {
         if (body) {
           const { phone, address } = body;
           setContact({ phone, address });
-          setEditableContact({ phone, address });
+          setLoadingContact(false);
         }
       } catch (errorMsg) {
         alert(errorMsg);
@@ -34,22 +31,7 @@ export const Contact = () => {
     fetchData();
   }, []);
 
-  const revertChanges = () => {
-    setEditableContact(contact);
-  };
-
-  const handleSaveContact = async () => {
-    if (
-      !(
-        editableContact.phone &&
-        editableContact.phone.trim() &&
-        editableContact.address &&
-        editableContact.address.trim()
-      )
-    ) {
-      alert("You haven't filled all contact info.");
-      return;
-    }
+  const handleSaveContact = async (values) => {
     try {
       let res;
       if (contact) {
@@ -57,7 +39,7 @@ export const Contact = () => {
           `${API_URL}/contact/${auth.user.username}`,
           addHeadersForPostPut({
             method: "PUT",
-            body: JSON.stringify(addUsernameToContact(editableContact)),
+            body: JSON.stringify(addUsernameToContact(values)),
           })
         );
       } else {
@@ -65,7 +47,7 @@ export const Contact = () => {
           `${API_URL}/contact/`,
           addHeadersForPostPut({
             method: "POST",
-            body: JSON.stringify(addUsernameToContact(editableContact)),
+            body: JSON.stringify(addUsernameToContact(values)),
           })
         );
       }
@@ -84,12 +66,12 @@ export const Contact = () => {
             throw err.username;
         }
       }
-      setContact(editableContact);
-      alert("Contact updated!");
+      setContact(values);
       setUpdatingContact(false);
+      alert("Contact updated!");
     } catch (error) {
       alert(error);
-      revertChanges();
+      throw error;
     }
   };
 
@@ -126,19 +108,15 @@ export const Contact = () => {
       <div className="d-flex align-items-center flex-grow-1">
         <h1 className="ms-5">Contact</h1>
         <div className="w-15"></div>
-        <ContactForm
-          contact={editableContact}
-          updating={updatingContact}
-          onSubmit={handleSaveContact}
-          onCancel={revertChanges}
-          onPhoneChange={(e) =>
-            setEditableContact({ ...editableContact, phone: e.target.value })
-          }
-          onAddressChange={(e) =>
-            setEditableContact({ ...editableContact, address: e.target.value })
-          }
-          setUpdating={(val) => setUpdatingContact(val)}
-        />
+        {!loadingContact && (
+          <ContactForm
+            contact={contact}
+            onSubmit={handleSaveContact}
+            updating={updatingContact}
+            setUpdating={setUpdatingContact}
+          />
+        )}
+        <div className="w-15"></div>
       </div>
       <AdPlug />
     </div>
