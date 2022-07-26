@@ -1,32 +1,60 @@
-export const LoginForm = (props) => {
+import { useForm } from "react-hook-form";
+import { CREDENTIALS_RULES } from "../consts";
+import "./styles.css";
+
+export const LoginForm = ({ onSubmit }) => {
+  const usernameRules = CREDENTIALS_RULES.username;
+  const pwdRules = CREDENTIALS_RULES.password;
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
+  const login = handleSubmit(async () => await onSubmit(getValues()));
+
   return (
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        props.onSubmit();
-      }}
-    >
+    <form onSubmit={login}>
       <input
-        className="d-block w-100"
+        {...register("username", {
+          required: usernameRules.requiredError,
+          minLength: {
+            value: usernameRules.minLength,
+            message: usernameRules.lengthError,
+          },
+          maxLength: {
+            value: usernameRules.maxLength,
+            message: usernameRules.lengthError,
+          },
+        })}
+        className="d-block w-100 border border-1 rounded-2 ig-input"
         type="text"
-        value={props.username}
-        onChange={(e) => props.onUsernameChange(e.target.value)}
         placeholder="Username"
       />
+      <span className="text-danger">{errors.username?.message}</span>
       <input
-        className="d-block w-100 mt-3"
+        {...register("password", {
+          required: pwdRules.requiredError,
+          minLength: {
+            value: pwdRules.minLength,
+            message: pwdRules.lengthError,
+          },
+          maxLength: {
+            value: pwdRules.maxLength,
+            message: pwdRules.lengthError,
+          },
+        })}
+        className="d-block w-100 mt-3 border border-1 rounded-2 ig-input"
         type="password"
-        value={props.password}
-        onChange={(e) => props.onPasswordChange(e.target.value)}
         placeholder="Password"
       />
+      <span className="text-danger">{errors.password?.message}</span>
       <div className="form-check mb-4 mt-2">
         <input
+          {...register("rememberPwd")}
           className="form-check-input"
           type="checkbox"
-          checked={props.rememberUser}
-          onChange={(e) => props.onRememberUserChange(e.currentTarget.checked)}
-          id="rememberPwd"
         />
         <label className="form-check-label" htmlFor="rememberPwd">
           Remember me

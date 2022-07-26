@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { phoneFormat } from "../regex";
+import { CONTACT_RULES } from "../consts";
 import "./ContactForm.css";
+import "./styles.css";
 
 export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
+  const phoneRules = CONTACT_RULES.phone;
+  const addressRules = CONTACT_RULES.address;
   const {
     register,
     handleSubmit,
@@ -23,7 +26,7 @@ export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
     });
   };
 
-  const submit = handleSubmit(() => {
+  const save = handleSubmit(() => {
     try {
       onSubmit(getValues());
     } catch (error) {
@@ -32,7 +35,7 @@ export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
   });
 
   return (
-    <form className="flex-grow-1" onSubmit={submit}>
+    <form className="flex-grow-1" onSubmit={save}>
       <div className="row row-cols-4">
         <div className="col-3 me-5">
           <label htmlFor="phone" className="d-block mb-1">
@@ -51,40 +54,40 @@ export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
           <input
             type="text"
             {...register("phone", {
-              required: "Phone number cannot be empty",
+              required: phoneRules.requiredError,
               pattern: {
-                value: phoneFormat,
-                message: "Phone number not in correct format",
+                value: phoneRules.pattern,
+                message: phoneRules.patternError,
               },
               minLength: {
-                value: 10,
-                message: "Phone number must be between 10 and 11 characters",
+                value: phoneRules.minLength,
+                message: phoneRules.lengthError,
               },
               maxLength: {
-                value: 11,
-                message: "Phone number must be between 10 and 11 characters",
+                value: phoneRules.maxLength,
+                message: phoneRules.lengthError,
               },
             })}
             disabled={!updating}
-            className="border border-1 shadow-sm contact-input"
+            className="border border-1 rounded-2 ig-input contact-input"
           />
         </div>
         <div className="col-3">
           <input
             type="text"
             {...register("address", {
-              required: "Address cannot be empty",
+              required: addressRules.requiredError,
               minLength: {
-                value: 1,
-                message: "Address must be between 1 and 75 characters",
+                value: addressRules.minLength,
+                message: addressRules.lengthError,
               },
               maxLength: {
-                value: 75,
-                message: "Address must be between 1 and 75 characters",
+                value: addressRules.maxLength,
+                message: addressRules.lengthError,
               },
             })}
             disabled={!updating}
-            className="border border-1 shadow-sm contact-input"
+            className="border border-1 rounded-2 ig-input contact-input"
           />
         </div>
         <div className="col ms-4">
