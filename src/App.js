@@ -6,10 +6,10 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import { Login } from "./pages/Login";
-import { HomeLayout } from "./pages/HomeLayout";
-import { Home } from "./pages/Home";
-import { Contact } from "./pages/Contact";
+import { Login } from "./pages/LoginComponent";
+import { HomeLayout } from "./pages/HomeLayoutComponent";
+import { Home } from "./pages/HomeComponent";
+import { Contact } from "./pages/ContactComponent";
 import { useAuth } from "./hooks/useAuth";
 
 function ProtectedOutlet() {

@@ -3,7 +3,7 @@ import "../site.scss";
 import { useAuth } from "../hooks/useAuth";
 import { AdPlug } from "../components/AdPlug";
 import { ContactForm } from "../components/ContactForm";
-import { getContact, createContact, updateContact } from "../api/contact";
+import { ContactService } from "../api/ContactService";
 
 export const Contact = () => {
   const [contact, setContact] = useState(null);
@@ -14,7 +14,10 @@ export const Contact = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getContact(auth.user.username, auth.token);
+        const res = await ContactService.getContact(
+          auth.user.username,
+          auth.accessToken
+        );
         const body = await res.json();
         if (body) {
           const { phone, address } = body;
@@ -32,13 +35,16 @@ export const Contact = () => {
     try {
       let res;
       if (contact) {
-        res = await updateContact(
+        res = await ContactService.updateContact(
           auth.user.username,
-          auth.token,
+          auth.accessToken,
           addUsernameToContact(values)
         );
       } else {
-        res = await createContact(auth.token, addUsernameToContact(values));
+        res = await ContactService.createContact(
+          auth.accessToken,
+          addUsernameToContact(values)
+        );
       }
 
       if (!res.ok) {
