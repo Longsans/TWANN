@@ -1,19 +1,16 @@
 import { Link } from "react-router-dom";
+import "./components.scss";
 
 export const Header = ({ brand, rightItems, children }) => {
   return (
     <header>
       <nav className="navbar navbar-light bg-white border-bottom box-shadow">
         <div className="container-fluid">
-          <Link
-            className="navbar-brand"
-            style={{ fontFamily: "monospace" }}
-            to="/"
-          >
+          <Link className="navbar-brand ff-mono" to="/">
             {brand}
           </Link>
           <ul className="navbar-nav flex-grow-1 list-group-horizontal">
-            <div style={{ width: "7%" }}></div>
+            <div className="w-sm"></div>
             <div className="d-flex align-items-center flex-shrink-0">
               {children}
             </div>

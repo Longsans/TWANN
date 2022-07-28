@@ -1,0 +1,37 @@
+@use 'shared';
+
+// widths
+
+.w-2 {
+  @include shared.w($width: 2%);
+}
+
+.w-8 {
+  @include shared.w($width: 8%);
+}
+
+.w-15 {
+  @include shared.w($width: 15%);
+}
+
+.w-20 {
+  @include shared.w($width: 20%);
+}
+
+.w-60 {
+  @include shared.w($width: 60%);
+}
+
+// heights
+
+.h-25 {
+  @include shared.h($height: 25%);
+}
+
+.flex-even {
+  flex: 1;
+}
+
+.text-justify {
+  text-align: justify;
+}

@@ -1,3 +1,14 @@
+export const HEADERS = {
+  authZ: "Authorization",
+  contentType: "Content-Type",
+  values: {
+    appJson: "application/json",
+  },
+  templates: {
+    Bearer: (token) => `Bearer ${token}`,
+  },
+};
+
 export const CREDENTIALS_RULES = {
   username: {
     minLength: 4,

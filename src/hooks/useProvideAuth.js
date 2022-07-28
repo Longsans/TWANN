@@ -1,5 +1,5 @@
-import { API_URL } from "../config";
 import { useState, useEffect } from "react";
+import { authenticate } from "../api/auth";
 
 export function useProvideAuth() {
   const [auth, setAuth] = useState();
@@ -23,16 +23,10 @@ export function useProvideAuth() {
   }, [auth]);
 
   const signIn = async (username, password, rememberUser) => {
-    const res = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-        rememberUser,
-      }),
+    const res = await authenticate({
+      username,
+      password,
+      rememberUser,
     }).catch(() => {
       signOut();
       throw "Error connecting to the server!";
@@ -59,6 +53,7 @@ export function useProvideAuth() {
 
   const signOut = () => {
     setAuth(null);
+    localStorage.removeItem(PERSIST_NAME);
   };
 
   return {

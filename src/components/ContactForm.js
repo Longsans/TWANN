@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { CONTACT_RULES } from "../consts";
+import { CONTACT_RULES } from "../utils/constants";
 import "./ContactForm.css";
-import "./styles.css";
+import "./components.scss";
 
 export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
   const phoneRules = CONTACT_RULES.phone;
