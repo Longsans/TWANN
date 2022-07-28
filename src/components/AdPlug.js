@@ -1,11 +1,9 @@
 import React from "react";
+import "./AdPlug.css";
 
 export const AdPlug = () => {
   return (
-    <div
-      className="d-flex h-25 justify-content-center align-items-center"
-      style={{ backgroundColor: "black", opacity: "75%", color: "white" }}
-    >
+    <div className="d-flex h-25 justify-content-center align-items-center ad">
       <p className="text-center">
         I will put your advertisements here for only $2! Get in touch now!
         <br />

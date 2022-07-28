@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { CREDENTIALS_RULES } from "../consts";
-import "./styles.css";
+import { CREDENTIALS_RULES } from "../utils/constants";
+import "./components.scss";
 
 export const LoginForm = ({ onSubmit }) => {
   const usernameRules = CREDENTIALS_RULES.username;
@@ -52,11 +52,11 @@ export const LoginForm = ({ onSubmit }) => {
       <span className="text-danger">{errors.password?.message}</span>
       <div className="form-check mb-4 mt-2">
         <input
-          {...register("rememberPwd")}
+          {...register("rememberUser")}
           className="form-check-input"
           type="checkbox"
         />
-        <label className="form-check-label" htmlFor="rememberPwd">
+        <label className="form-check-label" htmlFor="rememberUser">
           Remember me
         </label>
       </div>

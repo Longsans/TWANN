@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "../site.css";
-import { API_URL } from "../config";
+import "../site.scss";
 import { useAuth } from "../hooks/useAuth";
 import { AdPlug } from "../components/AdPlug";
 import { ContactForm } from "../components/ContactForm";
+import { getContact, createContact, updateContact } from "../api/contact";
 
 export const Contact = () => {
   const [contact, setContact] = useState(null);
@@ -14,10 +14,7 @@ export const Contact = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `${API_URL}/contact/${auth.user.username}`,
-          addTokenToHeaders()
-        );
+        const res = await getContact(auth.user.username, auth.token);
         const body = await res.json();
         if (body) {
           const { phone, address } = body;
@@ -35,35 +32,27 @@ export const Contact = () => {
     try {
       let res;
       if (contact) {
-        res = await fetch(
-          `${API_URL}/contact/${auth.user.username}`,
-          addHeadersForPostPut({
-            method: "PUT",
-            body: JSON.stringify(addUsernameToContact(values)),
-          })
+        res = await updateContact(
+          auth.user.username,
+          auth.token,
+          addUsernameToContact(values)
         );
       } else {
-        res = await fetch(
-          `${API_URL}/contact/`,
-          addHeadersForPostPut({
-            method: "POST",
-            body: JSON.stringify(addUsernameToContact(values)),
-          })
-        );
+        res = await createContact(auth.token, addUsernameToContact(values));
       }
 
       if (!res.ok) {
         const err = await res.json();
         switch (res.status) {
-          case 400:
-            throw Object.values(err).reduce(
-              (prev, curr) => `${prev}.\
-              ${curr}`
-            );
           case 404:
             throw "User not found.";
           case 409:
             throw err.username;
+          default: // 400
+            throw Object.values(err).reduce(
+              (prev, curr) => `${prev}.\
+              ${curr}`
+            );
         }
       }
       setContact(values);
@@ -79,26 +68,6 @@ export const Contact = () => {
     return {
       ...c,
       userUsername: auth.user.username,
-    };
-  };
-
-  const addHeadersForPostPut = (req) => {
-    const result = addTokenToHeaders(req);
-    result.headers["Content-Type"] = "application/json";
-    return result;
-  };
-
-  const addTokenToHeaders = (req) => {
-    if (req?.headers) {
-      const result = req;
-      result.headers["Authorization"] = `Bearer ${auth.token}`;
-      return result;
-    }
-    return {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-      ...req,
     };
   };
 

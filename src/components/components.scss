@@ -1,0 +1,17 @@
+@use '../shared';
+
+$input-bg-color: #f9f9f9;
+
+.ig-input {
+  background-color: $input-bg-color;
+  padding: 10px;
+  padding-left: 15px;
+}
+
+.w-sm {
+  @include shared.w($width: 7%);
+}
+
+.ff-mono {
+  font-family: monospace;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
 import { Link, Outlet } from "react-router-dom";
+import "./HomeLayout.scss";
 
 export const HomeLayout = () => {
   const auth = useAuth();
@@ -15,11 +16,7 @@ export const HomeLayout = () => {
       <Header
         brand={
           <p className="mb-0">
-            This Web App{" "}
-            <span style={{ color: "white", backgroundColor: "#0078D7" }}>
-              Needs{" "}
-            </span>
-            a Name
+            This Web App <span className="title-highlight">Needs </span>a Name
           </p>
         }
         rightItems={
