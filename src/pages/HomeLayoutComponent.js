@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
 import { Link, Outlet } from "react-router-dom";
-import "./HomeLayout.scss";
+import "./HomeLayoutComponent.scss";
 
 export const HomeLayout = () => {
   const auth = useAuth();

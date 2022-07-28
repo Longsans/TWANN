@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { authenticate } from "../api/auth";
+import { AuthService } from "../api/AuthService";
 
 export function useProvideAuth() {
   const [auth, setAuth] = useState();
@@ -23,7 +23,7 @@ export function useProvideAuth() {
   }, [auth]);
 
   const signIn = async (username, password, rememberUser) => {
-    const res = await authenticate({
+    const res = await AuthService.authenticate({
       username,
       password,
       rememberUser,
@@ -40,7 +40,7 @@ export function useProvideAuth() {
     const body = await res.json();
     setAuth({
       user: body.user,
-      token: body.jwt,
+      accessToken: body.accessToken,
     });
     if (rememberUser) {
       localStorage.setItem(PERSIST_NAME, true);
