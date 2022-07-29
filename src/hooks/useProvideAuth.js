@@ -7,11 +7,8 @@ export function useProvideAuth() {
   const [auth, setAuth] = useState();
   const [loadingInitial, setLoadingInitial] = useState(true);
 
-  const refreshToken = async (authValue) => {
-    let accessToken = authValue?.accessToken;
-    if (!accessToken || !accessToken.length) {
-      accessToken = auth?.accessToken;
-    }
+  const checkAndRefreshToken = async () => {
+    let accessToken = auth?.accessToken;
     if (accessToken && accessToken.length) {
       const token = jwtDecode(accessToken);
       const expiry = DateTime.fromSeconds(token.exp);
@@ -36,7 +33,7 @@ export function useProvideAuth() {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(refreshToken, 1 * 5 * 1000); // 2 minutes
+    const timer = setInterval(checkAndRefreshToken, 1 * 5 * 1000); // 2 minutes
     return () => clearInterval(timer);
   });
 
@@ -46,7 +43,7 @@ export function useProvideAuth() {
     }
     if (auth) {
       localStorage.setItem(AUTH_NAME, JSON.stringify(auth));
-      refreshToken(auth);
+      checkAndRefreshToken();
     } else {
       localStorage.removeItem(AUTH_NAME);
     }
