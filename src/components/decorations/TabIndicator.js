@@ -7,6 +7,7 @@ export const TabIndicator = ({ x, width, backgroundColor }) => {
     <motion.div
       className="indicator"
       animate={{ x, width, backgroundColor }}
+      transition={{ ease: "circOut" }}
     ></motion.div>
   );
 };

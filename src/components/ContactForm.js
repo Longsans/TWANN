@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { motion, AnimatePresence } from "framer-motion";
 import { CONTACT_RULES } from "../utils/constants";
 import "./ContactForm.css";
 import "./components.scss";
+import variables from "../site.scss";
 
 export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
   const phoneRules = CONTACT_RULES.phone;
   const addressRules = CONTACT_RULES.address;
+
   const {
     register,
     handleSubmit,
@@ -91,31 +94,74 @@ export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
           />
         </div>
         <div className="col ms-4">
-          {updating ? (
-            <div className="d-flex align-items-end align-self-end">
-              <input
+          <div className="d-flex align-items-end align-self-end">
+            {updating ? (
+              <motion.input
                 type="submit"
-                value="Save"
+                value="Update"
                 className="btn btn-success me-2"
+                initial={{ backgroundColor: variables.blue }}
+                animate={{
+                  backgroundColor: variables.green,
+                  transition: {
+                    duration: 0.2,
+                  },
+                }}
               />
-              <button
-                className="btn btn-secondary"
-                onClick={() => {
-                  setUpdating(false);
-                  revertChanges();
+            ) : (
+              <motion.button
+                className="btn btn-primary align-self-end me-2"
+                onClick={() => setUpdating(true)}
+                initial={{ backgroundColor: variables.green }}
+                animate={{
+                  backgroundColor: variables.blue,
+                  transition: { duration: 0.2 },
                 }}
               >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <button
-              className="btn btn-primary align-self-end"
-              onClick={() => setUpdating(true)}
-            >
-              Update
-            </button>
-          )}
+                Update
+              </motion.button>
+            )}
+            <AnimatePresence>
+              {updating && (
+                <motion.button
+                  key="cancel"
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={() => {
+                    setUpdating(false);
+                    revertChanges();
+                  }}
+                  initial={{ translateX: "-20px", width: 0 }}
+                  animate={{
+                    translateX: "10px",
+                    width: "40%",
+                    transition: {
+                      translateX: {
+                        ease: "circOut",
+                      },
+                      default: {
+                        ease: "backOut",
+                      },
+                    },
+                  }}
+                  exit={{
+                    translateX: "-10px",
+                    width: 0,
+                    transition: {
+                      translateX: {
+                        ease: "circIn",
+                      },
+                      default: {
+                        ease: "backIn",
+                      },
+                    },
+                  }}
+                >
+                  Cancel
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
