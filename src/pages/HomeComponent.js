@@ -15,7 +15,7 @@ export const Home = () => {
         <div className="d-flex flex-even">
           <div className="w-8"></div>
           <div className="d-flex w-60 flex-column align-items-start">
-            <h1 className="fw-bold">Hi, {auth.user.username}</h1>
+            <h1 className="fw-bold">Hi, {auth?.user?.username}</h1>
             <p className="fs-5 text-justify">
               Welcome to my website! As you can see on the top left corner, this
               web app is in desperate need for a name, since I don't have any

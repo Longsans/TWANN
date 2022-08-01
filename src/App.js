@@ -15,13 +15,13 @@ import { useAuth } from "./hooks/useAuth";
 function ProtectedOutlet() {
   const auth = useAuth();
 
-  return auth.user ? <Outlet /> : <Navigate to="/login" replace />;
+  return auth.accessToken ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 function RedirectToHomeIfAuthenticated() {
   const auth = useAuth();
 
-  return !auth.user ? <Outlet /> : <Navigate to="/" replace />;
+  return !auth.accessToken ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 function App() {
