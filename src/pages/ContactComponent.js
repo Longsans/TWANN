@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../site.scss";
 import { useAuth } from "../hooks/useAuth";
-import { AdPlug } from "../components/AdPlug";
+import { AdPlug } from "../components/decorations/AdPlug";
 import { ContactForm } from "../components/ContactForm";
 import { ContactService } from "../api/ContactService";
 
