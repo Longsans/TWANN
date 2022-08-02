@@ -1,11 +1,12 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { motion } from "framer-motion";
+import { AnimatedCircle } from "../components/decorations/AnimatedCircle";
 import "../site.scss";
 
 export const Home = () => {
   const auth = useAuth();
-  const dropIn = {
+  const mainContentDropIn = {
     initial: {
       opacity: 0,
       translateY: "50px",
@@ -22,11 +23,43 @@ export const Home = () => {
   };
 
   return (
-    <div className="d-flex flex-column flex-grow-1">
+    <div className="d-flex flex-column flex-grow-1 position-relative overflow-hidden">
+      <AnimatedCircle
+        x="6vw"
+        y="82vh"
+        width="40px"
+        height="40px"
+        translateY={["-0.75rem", "0.75rem", "-0.75rem"]}
+        delay={1.3}
+      />
+      <AnimatedCircle
+        x="25vw"
+        y="5vh"
+        width="80px"
+        height="80px"
+        translateY={["1rem", "-1rem", "1rem"]}
+        delay={1.45}
+      />
+      <AnimatedCircle
+        x="60vw"
+        y="65vh"
+        width="150px"
+        height="150px"
+        translateY={["-1.5rem", "1.5rem", "-1.5rem"]}
+        delay={1.6}
+      />
+      <AnimatedCircle
+        x="90vw"
+        y="10vh"
+        width="300px"
+        height="300px"
+        translateY={["2rem", "-2rem", "2rem"]}
+        delay={1.75}
+      />
       <div className="h-25"></div>
       <motion.div
         className="d-flex flex-grow-1"
-        variants={dropIn}
+        variants={mainContentDropIn}
         initial="initial"
         animate="visible"
       >

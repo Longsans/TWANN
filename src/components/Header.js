@@ -6,20 +6,15 @@ import variables from "../site.scss";
 
 export const Header = ({ brand, rightItems, items }) => {
   const location = useLocation();
-  const [indicatorX, setIndicatorX] = useState(0);
   const [indicatorWidth, setIndicatorWidth] = useState(0);
-  const [indicatorColor, setIndicatorColor] = useState();
   const refs = items.map(() => createRef());
 
   useEffect(() => {
     const selectedRef = refs.find(
       (ref) => ref.current.pathname === location.pathname
     );
-    const item = items.find((item) => item.to === location.pathname);
     const rect = selectedRef?.current.getBoundingClientRect();
-    setIndicatorX(rect.x);
     setIndicatorWidth(rect.width);
-    setIndicatorColor(item.textColor);
   }, [location]);
 
   return (
@@ -33,31 +28,34 @@ export const Header = ({ brand, rightItems, items }) => {
             <div className="w-sm"></div>
             <div className="d-flex align-items-center flex-shrink-0">
               {items.map((item, index) => (
-                <Link
-                  key={item.text}
-                  className={`nav-link me-4`}
-                  style={{
-                    color:
-                      location.pathname === item.to
-                        ? item.textColor
-                        : variables.black,
-                  }}
-                  to={item.to}
-                  ref={refs[index]}
-                >
-                  {item.text}
-                </Link>
+                <li className="me-4">
+                  <Link
+                    key={item.text}
+                    className="nav-link"
+                    style={{
+                      color:
+                        location.pathname === item.to
+                          ? item.textColor
+                          : variables.black,
+                    }}
+                    to={item.to}
+                    ref={refs[index]}
+                  >
+                    {item.text}
+                  </Link>
+                  {item.to === location.pathname && (
+                    <TabIndicator
+                      width={indicatorWidth}
+                      backgroundColor={item.textColor}
+                    />
+                  )}
+                </li>
               ))}
             </div>
             <div className="w-100"></div>
             <div className="me-3">{rightItems}</div>
           </ul>
         </div>
-        <TabIndicator
-          x={indicatorX}
-          width={indicatorWidth}
-          backgroundColor={indicatorColor}
-        />
       </nav>
     </header>
   );
