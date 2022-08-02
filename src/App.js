@@ -27,28 +27,26 @@ function RedirectToHomeIfAuthenticated() {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route
-          element={
-            <div className="App Layout d-flex">
-              <Outlet />
-            </div>
-          }
-        >
-          <Route element={<RedirectToHomeIfAuthenticated />}>
-            <Route path="login" element={<Login />} />
-          </Route>
-          <Route element={<ProtectedOutlet />}>
-            <Route path="/" element={<HomeLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="about" element={<About />} />
-            </Route>
+    <Routes>
+      <Route
+        element={
+          <div className="App Layout d-flex">
+            <Outlet />
+          </div>
+        }
+      >
+        <Route element={<RedirectToHomeIfAuthenticated />}>
+          <Route path="login" element={<Login />} />
+        </Route>
+        <Route element={<ProtectedOutlet />}>
+          <Route path="/" element={<HomeLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="about" element={<About />} />
           </Route>
         </Route>
-      </Routes>
-    </Router>
+      </Route>
+    </Routes>
   );
 }
 

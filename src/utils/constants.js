@@ -1,3 +1,5 @@
+export const APP_LOCATIONS = ["/", "/contact", "/about"];
+
 export const HEADERS = {
   authZ: "Authorization",
   contentType: "Content-Type",

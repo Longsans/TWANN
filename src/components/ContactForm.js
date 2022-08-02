@@ -9,6 +9,7 @@ import variables from "../site.scss";
 export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
   const phoneRules = CONTACT_RULES.phone;
   const addressRules = CONTACT_RULES.address;
+  const cancelButtonEaseOutEffect = [0.05, 0.71, 0.39, 1];
 
   const {
     register,
@@ -140,7 +141,7 @@ export const ContactForm = ({ contact, onSubmit, updating, setUpdating }) => {
                         ease: "circOut",
                       },
                       default: {
-                        ease: "backOut",
+                        ease: cancelButtonEaseOutEffect,
                       },
                     },
                   }}

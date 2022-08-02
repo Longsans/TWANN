@@ -1,14 +1,35 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
+import { motion } from "framer-motion";
 import "../site.scss";
 
 export const Home = () => {
   const auth = useAuth();
+  const dropIn = {
+    initial: {
+      opacity: 0,
+      translateY: "50px",
+    },
+    visible: {
+      opacity: 1,
+      translateY: "0px",
+      transition: {
+        ease: "easeOut",
+        duration: 0.6,
+        delay: 0.5,
+      },
+    },
+  };
 
   return (
     <div className="d-flex flex-column flex-grow-1">
       <div className="h-25"></div>
-      <div className="d-flex flex-grow-1">
+      <motion.div
+        className="d-flex flex-grow-1"
+        variants={dropIn}
+        initial="initial"
+        animate="visible"
+      >
         <div className="d-flex flex-even justify-content-end">
           <img className="w-75" src="tyler1-hi.jpg" alt="hi-from-t1" />
         </div>
@@ -24,7 +45,7 @@ export const Home = () => {
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
       <div className="h-25"></div>
     </div>
   );
