@@ -22,7 +22,7 @@ export const Modal = ({ handleClose, header, text, buttons }) => {
         }}
       >
         {header}
-        <p className="mt-auto mb-auto fs-5">{text}</p>
+        <p className="mt-auto mb-auto px-4 text-center fs-5">{text}</p>
         <div className="mt-auto d-flex justify-content-center w-100 mb-4 px-4">
           {buttons}
         </div>
