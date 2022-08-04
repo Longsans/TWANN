@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "../site.scss";
 import { useAuth } from "../hooks/useAuth";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { AdPlug } from "../components/decorations/AdPlug";
 import { ContactForm } from "../components/ContactForm";
 import { ContactService } from "../api/ContactService";
+import { ErrorModal } from "../components/ErrorModal";
+import { SuccessModal } from "../components/SuccessModal";
 import { useHistory } from "../hooks/useHistory";
-import { APP_LOCATIONS } from "../utils/constants";
+import { APP_LOCATIONS, CONNECTION_ERROR } from "../utils/constants";
 
 export const Contact = () => {
   const [contact, setContact] = useState(null);
   const [updatingContact, setUpdatingContact] = useState(false);
   const [loadingContact, setLoadingContact] = useState(true);
+  const [responseError, setResponseError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const history = useHistory();
   const auth = useAuth();
 
@@ -29,7 +33,7 @@ export const Contact = () => {
           setLoadingContact(false);
         }
       } catch (errorMsg) {
-        alert(errorMsg);
+        auth.setError(CONNECTION_ERROR);
       }
     };
     fetchData();
@@ -67,9 +71,9 @@ export const Contact = () => {
       }
       setContact(values);
       setUpdatingContact(false);
-      alert("Contact updated!");
+      setSuccessMessage("Contact updated!");
     } catch (error) {
-      alert(error);
+      setResponseError(error);
       throw error;
     }
   };
@@ -119,6 +123,22 @@ export const Contact = () => {
         </div>
         <AdPlug />
       </motion.div>
+      <AnimatePresence>
+        {responseError && (
+          <ErrorModal
+            handleClose={() => setResponseError(null)}
+            text={responseError}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {successMessage && (
+          <SuccessModal
+            handleClose={() => setSuccessMessage(null)}
+            text={successMessage}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

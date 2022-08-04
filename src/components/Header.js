@@ -28,9 +28,8 @@ export const Header = ({ brand, rightItems, items }) => {
             <div className="w-sm"></div>
             <div className="d-flex align-items-center flex-shrink-0">
               {items.map((item, index) => (
-                <li className="me-4">
+                <li key={item.text} className="me-4">
                   <Link
-                    key={item.text}
                     className="nav-link"
                     style={{
                       color:

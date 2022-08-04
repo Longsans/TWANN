@@ -2,6 +2,8 @@ import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
 import { Outlet } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { ErrorModal } from "../components/ErrorModal";
 import "./HomeLayoutComponent.scss";
 import variables from "../site.scss";
 
@@ -29,6 +31,11 @@ export const HomeLayout = () => {
     auth.signOut();
   };
 
+  const handleErrorModalClose = async () => {
+    await auth.signOut();
+    auth.setError(null);
+  };
+
   return (
     <div className="d-flex flex-column flex-grow-1">
       <Header
@@ -49,6 +56,11 @@ export const HomeLayout = () => {
         }
       ></Header>
       <Outlet />
+      <AnimatePresence>
+        {auth.error && (
+          <ErrorModal handleClose={handleErrorModalClose} text={auth.error} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

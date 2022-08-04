@@ -1,4 +1,6 @@
 export const APP_LOCATIONS = ["/", "/contact", "/about"];
+export const CONNECTION_ERROR =
+  "Error connecting to server, you will be signed out now.";
 
 export const HEADERS = {
   authZ: "Authorization",
