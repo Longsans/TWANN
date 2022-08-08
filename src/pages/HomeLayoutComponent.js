@@ -1,14 +1,39 @@
 import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { ErrorModal } from "../components/ErrorModal";
 import "./HomeLayoutComponent.scss";
+import variables from "../site.scss";
 
 export const HomeLayout = () => {
   const auth = useAuth();
+  const tabs = [
+    {
+      text: "Home",
+      to: "/",
+      textColor: variables.red,
+    },
+    {
+      text: "Contact",
+      to: "/contact",
+      textColor: variables.blue,
+    },
+    {
+      text: "About",
+      to: "/about",
+      textColor: variables.purple,
+    },
+  ];
 
   const handleLogOut = () => {
     auth.signOut();
+  };
+
+  const handleErrorModalClose = async () => {
+    await auth.signOut();
+    auth.setError(null);
   };
 
   return (
@@ -19,6 +44,7 @@ export const HomeLayout = () => {
             This Web App <span className="title-highlight">Needs </span>a Name
           </p>
         }
+        items={tabs}
         rightItems={
           <a
             className="nav-link text-danger"
@@ -28,18 +54,13 @@ export const HomeLayout = () => {
             Logout
           </a>
         }
-      >
-        <Link className="nav-link text-dark me-4" to="/">
-          Home
-        </Link>
-        <Link className="nav-link text-dark me-4" to="/contact">
-          Contact
-        </Link>
-        <Link className="nav-link text-dark" to="#">
-          About
-        </Link>
-      </Header>
+      ></Header>
       <Outlet />
+      <AnimatePresence>
+        {auth.error && (
+          <ErrorModal handleClose={handleErrorModalClose} text={auth.error} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

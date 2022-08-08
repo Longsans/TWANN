@@ -1,15 +1,43 @@
 import { useState, useEffect } from "react";
 import { AuthService } from "../api/AuthService";
+import { DateTime } from "luxon";
+import jwtDecode from "jwt-decode";
 
 export function useProvideAuth() {
   const [auth, setAuth] = useState();
   const [loadingInitial, setLoadingInitial] = useState(true);
+  const [error, setError] = useState(null);
+
+  const checkAndRefreshToken = async () => {
+    let accessToken = auth?.accessToken;
+    if (accessToken && accessToken.length) {
+      const token = jwtDecode(accessToken);
+      const expiry = DateTime.fromSeconds(token.exp);
+      if (expiry < DateTime.now()) {
+        const res = await AuthService.refreshAccessToken().catch(async () => {
+          setError("Error connecting to server, you will be signed out now.");
+          return;
+        });
+        const newToken = await res.text();
+        setAuth({
+          ...auth,
+          accessToken: newToken,
+        });
+      }
+    }
+  };
 
   useEffect(() => {
     const jsonString = localStorage.getItem(AUTH_NAME);
-    setAuth(JSON.parse(jsonString));
+    const authJson = JSON.parse(jsonString);
+    setAuth(authJson);
     setLoadingInitial(false);
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(checkAndRefreshToken, 1 * 5 * 1000); // 2 minutes
+    return () => clearInterval(timer);
+  });
 
   useEffect(() => {
     if (loadingInitial) {
@@ -17,6 +45,7 @@ export function useProvideAuth() {
     }
     if (auth) {
       localStorage.setItem(AUTH_NAME, JSON.stringify(auth));
+      checkAndRefreshToken();
     } else {
       localStorage.removeItem(AUTH_NAME);
     }
@@ -28,12 +57,10 @@ export function useProvideAuth() {
       password,
       rememberUser,
     }).catch(() => {
-      signOut();
       throw "Error connecting to the server!";
     });
 
     if (!res.ok) {
-      signOut();
       throw "Incorrect username or password!";
     }
 
@@ -51,9 +78,10 @@ export function useProvideAuth() {
     return body.user;
   };
 
-  const signOut = () => {
+  const signOut = async () => {
     setAuth(null);
     localStorage.removeItem(PERSIST_NAME);
+    await AuthService.logOut(auth.accessToken);
   };
 
   return {
@@ -61,6 +89,8 @@ export function useProvideAuth() {
     loadingInitial,
     signIn,
     signOut,
+    error,
+    setError,
   };
 }
 

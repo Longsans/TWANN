@@ -1,5 +1,6 @@
 import { API_URL } from "../config";
 import { HEADERS } from "../utils/constants";
+import { addTokenHeaderForFetch } from "./Helpers";
 
 export class AuthService {
   static authenticate(bodyObject) {
@@ -11,5 +12,22 @@ export class AuthService {
       credentials: "include",
       body: JSON.stringify(bodyObject),
     });
+  }
+
+  static refreshAccessToken() {
+    return fetch(`${API_URL}/refresh-token`, {
+      method: "POST",
+      credentials: "include",
+    });
+  }
+
+  static logOut(token) {
+    return fetch(
+      `${API_URL}/logout`,
+      addTokenHeaderForFetch(token, {
+        method: "POST",
+        credentials: "include",
+      })
+    );
   }
 }

@@ -1,4 +1,6 @@
 @use 'shared';
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootstrap/scss/variables';
 
 // widths
 
@@ -28,10 +30,20 @@
   @include shared.h($height: 25%);
 }
 
+// util classes
+
 .flex-even {
   flex: 1;
 }
 
 .text-justify {
   text-align: justify;
+}
+
+:export {
+  red: $red;
+  green: $green;
+  blue: $blue;
+  purple: $purple;
+  black: $black;
 }
