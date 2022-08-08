@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LoginComponent.css";
 import { LoginForm } from "../components/LoginForm";
+import { ErrorModal } from "../components/ErrorModal";
+import { AnimatePresence } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 
 export const Login = () => {
   const auth = useAuth();
+  const [modalText, setModalText] = useState(null);
 
   const handleSubmitForm = async ({ username, password, rememberUser }) => {
     try {
       await auth.signIn(username, password, rememberUser);
     } catch (errorMsg) {
-      alert(errorMsg);
+      setModalText(errorMsg);
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalText(null);
   };
 
   return (
@@ -28,6 +35,11 @@ export const Login = () => {
         <div className="flex-grow-1"></div>
         <p className="fw-light">&copy; Created by Long Do</p>
       </div>
+      <AnimatePresence>
+        {modalText && (
+          <ErrorModal handleClose={handleCloseModal} text={modalText} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
